@@ -22,12 +22,13 @@ var config = {
 var pool = new Pool(config);
 
 app.get("/api/info", async (req, res) => {
-	console.log(req.query.q);
 	try {
-        const template = "select sum(fa_sat_g + fa_mono_g + fa_poly_g) as fat_g, "
+		const template = "select sum(coalesce(fa_sat_g,0) + coalesce(fa_mono_g,0) + "
+									+ "coalesce(fa_poly_g,0)) as fat_g, "
             + "e.description, e.kcal, e.protein_g, e.carbohydrate_g "
             + "from entries e where description ilike $1 group by "
-            + "e.description, e.kcal, e.protein_g, e.carbohydrate_g limit 25;"
+			+ "e.kcal, e.protein_g, e.carbohydrate_g, e.description "
+			+ "order by e.description limit 20;"
         
 		const response = await pool.query(template, ['%' + req.query.q + '%']);
 		if (response.rowCount == 0) {
@@ -35,11 +36,9 @@ app.get("/api/info", async (req, res) => {
         }
         
         const results = response.rows.map(function(item) {
-            const fats = item.fat_g;
-            fats.toFixed(2);
 			return item;
 		});
-		res.json({ foods: response.rows });
+		res.json({ food: response.rows });
 	} catch (err) {
 		console.error("Error running query " + err);
 	}
