@@ -2,8 +2,8 @@ require("isomorphic-fetch");
 import BPromise from "bluebird";
 
 async function getProfile(foodname){
-    //return fetch(`http://35.245.126.165/api/info?q=${foodname}`).then(function(resp) {
-    return fetch(`http://localhost:8080/api/info?q=${foodname}`).then(function(resp) {
+    return fetch(`http://35.245.126.165/api/info?q=${foodname}`).then(function(resp) {
+    //return fetch(`http://localhost:8080/api/info?q=${foodname}`).then(function(resp) {
         //console.log(resp)
         return resp.json();
     })

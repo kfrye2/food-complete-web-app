@@ -28,7 +28,7 @@ app.get("/api/info", async (req, res) => {
             + "e.description, e.kcal, e.protein_g, e.carbohydrate_g "
             + "from entries e where description ilike $1 group by "
 			+ "e.kcal, e.protein_g, e.carbohydrate_g, e.description "
-			+ "order by e.description limit 20;"
+			+ "limit 20;"
         
 		const response = await pool.query(template, ['%' + req.query.q + '%']);
 		if (response.rowCount == 0) {

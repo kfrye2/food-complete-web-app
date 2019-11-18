@@ -10,7 +10,7 @@ class Search extends React.Component {
 
   async handleUpdate(evt) {
     this.setState({search: evt.target.value, display: false});
-    const food = await getInfo(this.state.search);
+    const food = await getInfo(evt.target.value);
     const tf = (food === null && this.state.search!='' ? true : false);
     this.setState({display: tf});
     return this.setState({food});
